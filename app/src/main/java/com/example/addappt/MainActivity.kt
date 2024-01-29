@@ -46,6 +46,12 @@ fun AddapptApp() {
     val backstackEntry = navController.currentBackStackEntryAsState()
     val bottomNavVisibility = remember { mutableStateOf(true) }
 
+    // Hides Bottom Nav on screens where it is not needed
+    when (backstackEntry.value?.destination?.route) {
+        AddapptScreens.SplashScreen.name -> bottomNavVisibility.value = false
+        else -> bottomNavVisibility.value = true
+    }
+
     Scaffold(
         bottomBar = {
             AnimatedVisibility(visible = bottomNavVisibility.value) {
