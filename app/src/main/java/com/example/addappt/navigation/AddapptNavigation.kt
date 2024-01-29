@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.addappt.screens.add.AddScreen
 import com.example.addappt.screens.home.HomeScreen
 import com.example.addappt.screens.motivation.MotivationScreen
+import com.example.addappt.screens.profile.ProfileScreen
 import com.example.addappt.screens.settings.SettingsScreen
 import com.example.addappt.screens.stats.StatsScreen
 import com.google.common.math.Stats
@@ -37,10 +38,10 @@ fun AddapptNavigation(navController: NavHostController){
             StatsScreen()
         }
         composable(AddapptScreens.SettingsScreen.name){
-            SettingsScreen()
+            SettingsScreen(navController = navController)
         }
         composable(AddapptScreens.ProfileScreen.name){
-
+            ProfileScreen(navController = navController)
         }
     }
 }
