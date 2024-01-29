@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "65471391276",
+    "project_id": "addappt-cfded",
+    "storage_bucket": "addappt-cfded.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65471391276:android:d3a37182ac3487c8201389",
+        "android_client_info": {
+          "package_name": "com.example.addappt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmJbtB-H25oeC7JEtVrz2foQoUOiTXC_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
