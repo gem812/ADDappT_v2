@@ -9,6 +9,7 @@ import com.example.addappt.screens.home.HomeScreen
 import com.example.addappt.screens.motivation.MotivationScreen
 import com.example.addappt.screens.profile.ProfileScreen
 import com.example.addappt.screens.settings.SettingsScreen
+import com.example.addappt.screens.splash.SplashScreen
 import com.example.addappt.screens.stats.StatsScreen
 import com.google.common.math.Stats
 
@@ -17,10 +18,10 @@ fun AddapptNavigation(navController: NavHostController){
 
     NavHost(
         navController = navController,
-        startDestination = AddapptScreens.HomeScreen.name
+        startDestination = AddapptScreens.SplashScreen.name
     ){
         composable(AddapptScreens.SplashScreen.name){
-
+            SplashScreen(navController = navController)
         }
         composable(AddapptScreens.IntroScreen.name){
 
