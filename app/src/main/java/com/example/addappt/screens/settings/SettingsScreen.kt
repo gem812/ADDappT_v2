@@ -24,6 +24,7 @@ import com.example.addappt.R
 import com.example.addappt.components.widgets.ClickableRowSettings
 import com.example.addappt.components.widgets.SearchTextField
 import com.example.addappt.navigation.AddapptScreens
+import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -132,7 +133,11 @@ fun SettingsScreen(navController : NavController){
                     icon = R.drawable.ic_logout,
                     primaryText = "Log out user",
                     destinationRoute = "",
-                    onClick = {}
+                    onClick = {
+                        FirebaseAuth.getInstance().signOut().run {
+                            navController.navigate(AddapptScreens.LoginScreen.name)
+                        }
+                    }
                 )
 
             }

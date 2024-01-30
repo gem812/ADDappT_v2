@@ -2,6 +2,7 @@ package com.example.addappt
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
@@ -25,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.addappt.navigation.AddapptNavigation
 import com.example.addappt.navigation.AddapptScreens
 import com.example.addappt.ui.theme.ADDappTTheme
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

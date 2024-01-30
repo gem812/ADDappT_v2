@@ -34,9 +34,13 @@ import com.example.addappt.components.elements.TitleLogo
 import com.example.addappt.components.widgets.EmailInputField
 import com.example.addappt.components.widgets.PasswordInputField
 import com.example.addappt.constants.Constants
+import com.example.addappt.navigation.AddapptScreens
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
 
     val showLoginForm = rememberSaveable { mutableStateOf(true) }
 
@@ -53,15 +57,19 @@ fun LoginScreen(navController: NavController) {
                 LoginSignupForm(
                     loading = false,
                     isCreateAccount = false
-                ) { _, _ ->
-
+                ) { email, pwd ->
+                    viewModel.signIn(email, pwd) {
+                        navController.navigate(AddapptScreens.HomeScreen.name)
+                    }
                 }
             } else {
                 LoginSignupForm(
                     loading = false,
                     isCreateAccount = true
-                ) { _, _ ->
-
+                ) { email, pwd ->
+                    viewModel.signUp(email, pwd) {
+                        navController.navigate(AddapptScreens.HomeScreen.name)
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -144,7 +152,7 @@ fun LoginSignupForm(
         )
 
         SubmitButton(
-            textId = if(isCreateAccount) "Create Account" else "Login",
+            textId = if (isCreateAccount) "Create Account" else "Login",
             loading = loading,
             validInputs = isValid
         ) {
