@@ -50,6 +50,7 @@ fun AddapptApp() {
     when (backstackEntry.value?.destination?.route) {
         AddapptScreens.SplashScreen.name -> bottomNavVisibility.value = false
         AddapptScreens.IntroScreen.name -> bottomNavVisibility.value = false
+        AddapptScreens.LoginScreen.name -> bottomNavVisibility.value = false
         else -> bottomNavVisibility.value = true
     }
 

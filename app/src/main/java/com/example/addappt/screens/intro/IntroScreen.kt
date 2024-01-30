@@ -76,7 +76,7 @@ fun IntroScreen(navController: NavController){
                 ) {
                     Button(
                         onClick = {
-                            navController.navigate(AddapptScreens.HomeScreen.name)
+                            navController.navigate(AddapptScreens.LoginScreen.name)
                         },
                         modifier = Modifier
                             .padding(12.dp)
