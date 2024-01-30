@@ -3,6 +3,7 @@ package com.example.addappt.navigation
 enum class AddapptScreens {
     SplashScreen,
     IntroScreen,
+    LoginScreen,
     HomeScreen,
     MotivationScreen,
     StatsScreen,
@@ -15,6 +16,7 @@ enum class AddapptScreens {
         = when (route?.substringBefore("/")) {
             SplashScreen.name -> SplashScreen
             IntroScreen.name -> IntroScreen
+            LoginScreen.name -> LoginScreen
             HomeScreen.name -> HomeScreen
             MotivationScreen.name -> MotivationScreen
             StatsScreen.name -> StatsScreen
