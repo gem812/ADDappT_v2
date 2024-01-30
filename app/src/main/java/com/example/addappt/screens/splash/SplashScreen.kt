@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.addappt.R
 import com.example.addappt.navigation.AddapptScreens
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 @Composable
@@ -44,7 +45,11 @@ fun SplashScreen(navController: NavController){
                 )
             )
             delay(2000)
-            navController.navigate(AddapptScreens.IntroScreen.name)
+            if(FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()) {
+                navController.navigate(AddapptScreens.IntroScreen.name)
+            } else {
+                navController.navigate(AddapptScreens.HomeScreen.name)
+            }
         }
     )
 
