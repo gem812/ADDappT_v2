@@ -49,6 +49,7 @@ fun AddapptApp() {
     // Hides Bottom Nav on screens where it is not needed
     when (backstackEntry.value?.destination?.route) {
         AddapptScreens.SplashScreen.name -> bottomNavVisibility.value = false
+        AddapptScreens.IntroScreen.name -> bottomNavVisibility.value = false
         else -> bottomNavVisibility.value = true
     }
 

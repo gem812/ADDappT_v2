@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.addappt.screens.add.AddScreen
 import com.example.addappt.screens.home.HomeScreen
+import com.example.addappt.screens.intro.IntroScreen
 import com.example.addappt.screens.motivation.MotivationScreen
 import com.example.addappt.screens.profile.ProfileScreen
 import com.example.addappt.screens.settings.SettingsScreen
@@ -24,7 +25,7 @@ fun AddapptNavigation(navController: NavHostController){
             SplashScreen(navController = navController)
         }
         composable(AddapptScreens.IntroScreen.name){
-
+            IntroScreen(navController = navController)
         }
         composable(AddapptScreens.HomeScreen.name){
             HomeScreen()

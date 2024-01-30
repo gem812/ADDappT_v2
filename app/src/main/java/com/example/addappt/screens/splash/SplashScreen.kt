@@ -44,7 +44,7 @@ fun SplashScreen(navController: NavController){
                 )
             )
             delay(2000)
-            navController.navigate(AddapptScreens.HomeScreen.name)
+            navController.navigate(AddapptScreens.IntroScreen.name)
         }
     )
 
