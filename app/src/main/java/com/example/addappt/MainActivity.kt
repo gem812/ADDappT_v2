@@ -2,12 +2,16 @@ package com.example.addappt
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -18,15 +22,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.addappt.navigation.AddapptNavigation
 import com.example.addappt.navigation.AddapptScreens
 import com.example.addappt.ui.theme.ADDappTTheme
-import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +63,9 @@ fun AddapptApp() {
     Scaffold(
         bottomBar = {
             AnimatedVisibility(visible = bottomNavVisibility.value) {
-                NavigationBar {
+                NavigationBar(
+
+                ) {
                     NavigationBarItem(
                         selected = backstackEntry.value?.destination?.route.equals(AddapptScreens.HomeScreen.name),
                         onClick = { navController.navigate(AddapptScreens.HomeScreen.name) },
@@ -86,19 +92,16 @@ fun AddapptApp() {
                             )
                         }
                     )
-                    NavigationBarItem(
-                        selected = backstackEntry.value?.destination?.route.equals(AddapptScreens.AddScreen.name),
-                        onClick = { navController.navigate(AddapptScreens.AddScreen.name) },
-                        label = {
-                            Text("Add")
+                    FloatingActionButton(
+                        onClick = {
+                            navController.navigate(AddapptScreens.AddScreen.name)
                         },
-                        icon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_add),
-                                contentDescription = "Add Icon"
-                            )
-                        }
-                    )
+                        modifier = Modifier
+                            .padding(top = 6.dp),
+                        shape = RoundedCornerShape(24.dp)
+                    ) {
+                        Icon(imageVector = Icons.Default.Add, contentDescription = "Add floating action button icon")
+                    }
                     NavigationBarItem(
                         selected = backstackEntry.value?.destination?.route.equals(AddapptScreens.StatsScreen.name),
                         onClick = { navController.navigate(AddapptScreens.StatsScreen.name) },
