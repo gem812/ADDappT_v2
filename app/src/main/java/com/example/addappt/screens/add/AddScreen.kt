@@ -261,7 +261,7 @@ private fun LogWaterScreen(viewModel: AddScreenViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(text = "Log Water Screen")
+            WaterGrid()
         }
         Column(
             modifier = Modifier
