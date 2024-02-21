@@ -19,13 +19,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.addappt.constants.DailyTrackingStage
 import com.example.addappt.navigation.AddapptScreens
 import com.example.addappt.R
+import com.example.addappt.models.ui.MoodRowModel
 
 @Composable
 fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = viewModel()) {
@@ -50,6 +53,19 @@ fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = view
 
 @Composable
 private fun LogMoodScreen(navController: NavController, viewModel: AddScreenViewModel) {
+
+    val moodList = listOf<MoodRowModel>(
+        MoodRowModel(moodName = "Energised", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 9),
+        MoodRowModel(moodName = "Very Good", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 8),
+        MoodRowModel(moodName = "Good", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 7),
+        MoodRowModel(moodName = "Ok", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 6),
+        MoodRowModel(moodName = "Meh", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 5),
+        MoodRowModel(moodName = "Not Ok", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 4),
+        MoodRowModel(moodName = "Bad", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 3),
+        MoodRowModel(moodName = "Very Bad", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 2),
+        MoodRowModel(moodName = "No Energy", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 1)
+    )
+
     Column {
         Column(
             modifier = Modifier
@@ -58,7 +74,7 @@ private fun LogMoodScreen(navController: NavController, viewModel: AddScreenView
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(text = "Log Mood Screen")
+            MoodsColumn(moodList = moodList, onClick = {})
         }
         Column(
             modifier = Modifier
