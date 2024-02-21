@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -30,19 +32,18 @@ fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = view
 
     val dailyTrackerStage = viewModel.trackerStage
 
-    when (viewModel.trackerStage) {
-        DailyTrackingStage.DAILY_MOOD_STAGE -> LogMoodScreen(
-            navController = navController,
-            viewModel = viewModel
-        )
-
-        DailyTrackingStage.DAILY_FOCUS_STAGE -> LogFocusScreen(viewModel = viewModel)
-        DailyTrackingStage.SLEEP_DURATION_QUALITY_STAGE -> LogSleepScreen(viewModel = viewModel)
-        DailyTrackingStage.WATER_INTAKE_STAGE -> LogWaterScreen(viewModel = viewModel)
-        DailyTrackingStage.EXERCISE_STAGE -> LogExerciseScreen(
-            navController = navController,
-            viewModel = viewModel
-        )
+    Surface(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        when (viewModel.trackerStage) {
+            DailyTrackingStage.DAILY_MOOD_STAGE -> LogMoodScreen(navController = navController, viewModel = viewModel)
+            DailyTrackingStage.DAILY_FOCUS_STAGE -> LogFocusScreen(viewModel = viewModel)
+            DailyTrackingStage.SLEEP_DURATION_QUALITY_STAGE -> LogSleepScreen(viewModel = viewModel)
+            DailyTrackingStage.WATER_INTAKE_STAGE -> LogWaterScreen(viewModel = viewModel)
+            DailyTrackingStage.EXERCISE_STAGE -> LogExerciseScreen(navController = navController, viewModel = viewModel)
+        }
     }
 
 }
@@ -301,7 +302,103 @@ private fun LogExerciseScreen(navController: NavController, viewModel: AddScreen
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(text = "Log Exercise Screen")
+            var minsOfExercise = remember { mutableStateOf(0) }
+            var displayMins = minsOfExercise.value * 15
+            var sliderPositionState = remember { mutableStateOf(0f) }
+
+            Text("How many minutes of exercise did you achieve today?")
+
+            Row() {
+                Box(
+                    modifier = Modifier
+                        .weight(0.25f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    IconButton(
+                        onClick = { minsOfExercise.value-- }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_subtract),
+                            contentDescription = "Subtract Icon"
+                        )
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(0.5f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("$displayMins mins")
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(0.25f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    IconButton(
+                        onClick = { minsOfExercise.value++ }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_add),
+                            contentDescription = "Add icon"
+                        )
+                    }
+                }
+            }
+
+            Text("How would you rate the intensity of your exercise?")
+
+            Row {
+                Box(
+                    modifier = Modifier
+                        .weight(0.2f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_sitting),
+                        contentDescription = "Insomnia icon",
+                        modifier = Modifier
+                            .size(40.dp)
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(0.6f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Slider(
+                        value = sliderPositionState.value,
+                        onValueChange = { newVal ->
+                            sliderPositionState.value = newVal
+                        },
+                        modifier = Modifier.padding(4.dp),
+                        steps = 3
+                    )
+
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(0.2f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_running),
+                        contentDescription = "Sleep icon",
+                        modifier = Modifier
+                            .size(40.dp)
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                Text("Low Intensity")
+                Text("High Intensity")
+            }
         }
         Column(
             modifier = Modifier
@@ -321,7 +418,7 @@ private fun LogExerciseScreen(navController: NavController, viewModel: AddScreen
                     Text("Back")
                 }
                 Button(
-                    onClick = { navController.navigate(AddapptScreens.HomeScreen.name) }
+                    onClick = { /**TODO*/ }
                 ) {
                     Text("Finish")
                 }
