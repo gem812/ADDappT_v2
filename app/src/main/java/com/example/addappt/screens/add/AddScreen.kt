@@ -6,11 +6,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,7 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -31,6 +35,7 @@ import com.example.addappt.navigation.AddapptScreens
 import com.example.addappt.R
 import com.example.addappt.models.ui.MoodRowModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = viewModel()) {
 
@@ -41,12 +46,34 @@ fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = view
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        when (viewModel.trackerStage) {
-            DailyTrackingStage.DAILY_MOOD_STAGE -> LogMoodScreen(navController = navController, viewModel = viewModel)
-            DailyTrackingStage.DAILY_FOCUS_STAGE -> LogFocusScreen(viewModel = viewModel)
-            DailyTrackingStage.SLEEP_DURATION_QUALITY_STAGE -> LogSleepScreen(viewModel = viewModel)
-            DailyTrackingStage.WATER_INTAKE_STAGE -> LogWaterScreen(viewModel = viewModel)
-            DailyTrackingStage.EXERCISE_STAGE -> LogExerciseScreen(navController = navController, viewModel = viewModel)
+        Scaffold(
+            topBar = {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 6.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = viewModel.trackingStageTitle,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(it)
+            ) {
+                when (viewModel.trackerStage) {
+                    DailyTrackingStage.DAILY_MOOD_STAGE -> LogMoodScreen(navController = navController, viewModel = viewModel)
+                    DailyTrackingStage.DAILY_FOCUS_STAGE -> LogFocusScreen(viewModel = viewModel)
+                    DailyTrackingStage.SLEEP_DURATION_QUALITY_STAGE -> LogSleepScreen(viewModel = viewModel)
+                    DailyTrackingStage.WATER_INTAKE_STAGE -> LogWaterScreen(viewModel = viewModel)
+                    DailyTrackingStage.EXERCISE_STAGE -> LogExerciseScreen(navController = navController, viewModel = viewModel)
+                }
+            }
         }
     }
 
@@ -56,15 +83,51 @@ fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = view
 private fun LogMoodScreen(navController: NavController, viewModel: AddScreenViewModel) {
 
     val moodList = listOf<MoodRowModel>(
-        MoodRowModel(moodName = "Energised", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 9),
-        MoodRowModel(moodName = "Very Good", moodIconUrl = ImageVector.vectorResource(R.drawable.em_very_good), moodRating = 8),
-        MoodRowModel(moodName = "Good", moodIconUrl = ImageVector.vectorResource(R.drawable.em_good), moodRating = 7),
-        MoodRowModel(moodName = "Ok", moodIconUrl = ImageVector.vectorResource(R.drawable.em_ok), moodRating = 6),
-        MoodRowModel(moodName = "Meh", moodIconUrl = ImageVector.vectorResource(R.drawable.em_meh), moodRating = 5),
-        MoodRowModel(moodName = "Not Ok", moodIconUrl = ImageVector.vectorResource(R.drawable.em_not_ok), moodRating = 4),
-        MoodRowModel(moodName = "Bad", moodIconUrl = ImageVector.vectorResource(R.drawable.em_bad), moodRating = 3),
-        MoodRowModel(moodName = "Very Bad", moodIconUrl = ImageVector.vectorResource(R.drawable.em_very_bad), moodRating = 2),
-        MoodRowModel(moodName = "No Energy", moodIconUrl = ImageVector.vectorResource(R.drawable.em_no_energy), moodRating = 1)
+        MoodRowModel(
+            moodName = "Energised",
+            moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck),
+            moodRating = 9
+        ),
+        MoodRowModel(
+            moodName = "Very Good",
+            moodIconUrl = ImageVector.vectorResource(R.drawable.em_very_good),
+            moodRating = 8
+        ),
+        MoodRowModel(
+            moodName = "Good",
+            moodIconUrl = ImageVector.vectorResource(R.drawable.em_good),
+            moodRating = 7
+        ),
+        MoodRowModel(
+            moodName = "Ok",
+            moodIconUrl = ImageVector.vectorResource(R.drawable.em_ok),
+            moodRating = 6
+        ),
+        MoodRowModel(
+            moodName = "Meh",
+            moodIconUrl = ImageVector.vectorResource(R.drawable.em_meh),
+            moodRating = 5
+        ),
+        MoodRowModel(
+            moodName = "Not Ok",
+            moodIconUrl = ImageVector.vectorResource(R.drawable.em_not_ok),
+            moodRating = 4
+        ),
+        MoodRowModel(
+            moodName = "Bad",
+            moodIconUrl = ImageVector.vectorResource(R.drawable.em_bad),
+            moodRating = 3
+        ),
+        MoodRowModel(
+            moodName = "Very Bad",
+            moodIconUrl = ImageVector.vectorResource(R.drawable.em_very_bad),
+            moodRating = 2
+        ),
+        MoodRowModel(
+            moodName = "No Energy",
+            moodIconUrl = ImageVector.vectorResource(R.drawable.em_no_energy),
+            moodRating = 1
+        )
     )
 
     Column {
@@ -114,7 +177,112 @@ private fun LogFocusScreen(viewModel: AddScreenViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(text = "Log Focus Screen")
+            val minsOfFocus = remember { mutableStateOf(0) }
+            val displayMins = minsOfFocus.value * 15
+            val sliderPositionState = remember { mutableStateOf(0f) }
+            val focusPercentage = (sliderPositionState.value * 100).toInt()
+
+            Text("How many minutes of focus were you able to apply today?")
+
+            Row() {
+                Box(
+                    modifier = Modifier
+                        .weight(0.25f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    IconButton(
+                        onClick = { minsOfFocus.value-- }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_subtract),
+                            contentDescription = "Subtract Icon"
+                        )
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(0.5f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(displayMins.toString())
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(0.25f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    IconButton(
+                        onClick = { minsOfFocus.value++ }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_add),
+                            contentDescription = "Add icon"
+                        )
+                    }
+                }
+            }
+
+            Text("As a %, what level of focus were you able to apply")
+
+            Row {
+                Box(
+                    modifier = Modifier
+                        .weight(0.2f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_no_focus),
+                            contentDescription = "Insomnia icon",
+                            modifier = Modifier
+                                .height(60.dp)
+                        )
+                        Text("0 %")
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(0.6f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Slider(
+                            value = sliderPositionState.value,
+                            onValueChange = { newVal ->
+                                sliderPositionState.value = newVal
+                            },
+                            modifier = Modifier.padding(4.dp),
+                            steps = 9
+                        )
+                        Text(text = "${focusPercentage.toString()} %")
+                    }
+
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(0.2f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_focussed),
+                            contentDescription = "Sleep icon",
+                            modifier = Modifier
+                                .height(60.dp)
+                        )
+                        Text("100%")
+                    }
+                }
+            }
         }
         Column(
             modifier = Modifier
@@ -205,12 +373,17 @@ private fun LogSleepScreen(viewModel: AddScreenViewModel) {
                         .weight(0.2f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_insomnia),
-                        contentDescription = "Insomnia icon",
-                        modifier = Modifier
-                            .size(40.dp)
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_insomnia),
+                            contentDescription = "Insomnia icon",
+                            modifier = Modifier
+                                .size(40.dp)
+                        )
+                        Text("Restless")
+                    }
                 }
                 Box(
                     modifier = Modifier
@@ -232,12 +405,17 @@ private fun LogSleepScreen(viewModel: AddScreenViewModel) {
                         .weight(0.2f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_sleep),
-                        contentDescription = "Sleep icon",
-                        modifier = Modifier
-                            .size(40.dp)
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_sleep),
+                            contentDescription = "Sleep icon",
+                            modifier = Modifier
+                                .size(40.dp)
+                        )
+                        Text(text = "Deep Sleep")
+                    }
                 }
             }
         }
@@ -371,12 +549,18 @@ private fun LogExerciseScreen(navController: NavController, viewModel: AddScreen
                         .weight(0.2f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_sitting),
-                        contentDescription = "Insomnia icon",
-                        modifier = Modifier
-                            .size(40.dp)
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_sitting),
+                            contentDescription = "Sitting icon",
+                            modifier = Modifier
+                                .size(40.dp)
+                        )
+                        Text("Low")
+                    }
+
                 }
                 Box(
                     modifier = Modifier
@@ -398,23 +582,18 @@ private fun LogExerciseScreen(navController: NavController, viewModel: AddScreen
                         .weight(0.2f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_running),
-                        contentDescription = "Sleep icon",
-                        modifier = Modifier
-                            .size(40.dp)
-                    )
+                    Column(
+
+                    ){
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_running),
+                            contentDescription = "Sprint icon",
+                            modifier = Modifier
+                                .size(40.dp)
+                        )
+                        Text("High")
+                    }
                 }
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ){
-                Text("Low Intensity")
-                Text("High Intensity")
             }
         }
         Column(

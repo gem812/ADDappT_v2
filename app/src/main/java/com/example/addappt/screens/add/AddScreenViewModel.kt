@@ -10,8 +10,19 @@ class AddScreenViewModel : ViewModel() {
 
     var trackerStage by mutableStateOf(DailyTrackingStage.DAILY_MOOD_STAGE)
 
-    fun updateStage(updatedStage : DailyTrackingStage){
+    var trackingStageTitle by mutableStateOf(
+        "Current Mood"
+    )
+
+    fun updateStage(updatedStage: DailyTrackingStage) {
         trackerStage = updatedStage
+        trackingStageTitle = when (trackerStage) {
+            DailyTrackingStage.DAILY_MOOD_STAGE -> "Current Mood"
+            DailyTrackingStage.DAILY_FOCUS_STAGE -> "Current Focus"
+            DailyTrackingStage.SLEEP_DURATION_QUALITY_STAGE -> "Sleep Duration & Quality"
+            DailyTrackingStage.WATER_INTAKE_STAGE -> "Water Intake"
+            DailyTrackingStage.EXERCISE_STAGE -> "Daily Exercise"
+        }
     }
 
 }
