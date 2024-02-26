@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -51,6 +52,7 @@ fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = view
 
 }
 
+@Preview
 @Composable
 private fun LogMoodScreen(navController: NavController, viewModel: AddScreenViewModel) {
 
