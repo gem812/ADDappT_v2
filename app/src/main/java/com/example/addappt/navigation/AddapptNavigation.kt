@@ -38,7 +38,7 @@ fun AddapptNavigation(navController: NavHostController){
             MotivationScreen()
         }
         composable(AddapptScreens.AddScreen.name){
-            AddScreen()
+            AddScreen(navController = navController)
         }
         composable(AddapptScreens.StatsScreen.name){
             StatsScreen()
