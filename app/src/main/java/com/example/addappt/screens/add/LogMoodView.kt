@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,12 +27,20 @@ fun MoodRow(
     Row (
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = 6.dp)
             .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(imageVector = mood.moodIconUrl, contentDescription = "${mood.moodName} Icon")
-        Text(mood.moodName)
+        Image(
+            imageVector = mood.moodIconUrl,
+            contentDescription = "${mood.moodName} Icon",
+            modifier = Modifier
+                .padding(horizontal = 12.dp)
+            )
+        Text(
+            text = mood.moodName,
+            style = MaterialTheme.typography.titleMedium
+        )
     }
 }
 

@@ -52,20 +52,19 @@ fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = view
 
 }
 
-@Preview
 @Composable
 private fun LogMoodScreen(navController: NavController, viewModel: AddScreenViewModel) {
 
     val moodList = listOf<MoodRowModel>(
         MoodRowModel(moodName = "Energised", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 9),
-        MoodRowModel(moodName = "Very Good", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 8),
-        MoodRowModel(moodName = "Good", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 7),
-        MoodRowModel(moodName = "Ok", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 6),
-        MoodRowModel(moodName = "Meh", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 5),
-        MoodRowModel(moodName = "Not Ok", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 4),
-        MoodRowModel(moodName = "Bad", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 3),
-        MoodRowModel(moodName = "Very Bad", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 2),
-        MoodRowModel(moodName = "No Energy", moodIconUrl = ImageVector.vectorResource(R.drawable.em_starstruck), moodRating = 1)
+        MoodRowModel(moodName = "Very Good", moodIconUrl = ImageVector.vectorResource(R.drawable.em_very_good), moodRating = 8),
+        MoodRowModel(moodName = "Good", moodIconUrl = ImageVector.vectorResource(R.drawable.em_good), moodRating = 7),
+        MoodRowModel(moodName = "Ok", moodIconUrl = ImageVector.vectorResource(R.drawable.em_ok), moodRating = 6),
+        MoodRowModel(moodName = "Meh", moodIconUrl = ImageVector.vectorResource(R.drawable.em_meh), moodRating = 5),
+        MoodRowModel(moodName = "Not Ok", moodIconUrl = ImageVector.vectorResource(R.drawable.em_not_ok), moodRating = 4),
+        MoodRowModel(moodName = "Bad", moodIconUrl = ImageVector.vectorResource(R.drawable.em_bad), moodRating = 3),
+        MoodRowModel(moodName = "Very Bad", moodIconUrl = ImageVector.vectorResource(R.drawable.em_very_bad), moodRating = 2),
+        MoodRowModel(moodName = "No Energy", moodIconUrl = ImageVector.vectorResource(R.drawable.em_no_energy), moodRating = 1)
     )
 
     Column {
