@@ -1,5 +1,7 @@
 package com.example.addappt.screens.add
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,7 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,16 +23,21 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.addappt.constants.DailyTrackingStage
@@ -35,11 +45,10 @@ import com.example.addappt.navigation.AddapptScreens
 import com.example.addappt.R
 import com.example.addappt.models.ui.MoodRowModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = viewModel()) {
-
-    val dailyTrackerStage = viewModel.trackerStage
 
     Surface(
         modifier = Modifier
@@ -48,18 +57,26 @@ fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = view
     ) {
         Scaffold(
             topBar = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 6.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = viewModel.trackingStageTitle,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = viewModel.trackingStageTitle,
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                    },
+                    actions = {
+                    },
+                    navigationIcon = {
+                        if(viewModel.trackerStage == DailyTrackingStage.DAILY_MOOD_STAGE) {
+                            IconButton(
+                                onClick = { navController.navigate(AddapptScreens.HomeScreen.name) }
+                            ) {
+                                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
+                            }
+                        }
+                    }
+                )
             }
         ) {
             Column(
@@ -72,6 +89,7 @@ fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = view
                     DailyTrackingStage.SLEEP_DURATION_QUALITY_STAGE -> LogSleepScreen(viewModel = viewModel)
                     DailyTrackingStage.WATER_INTAKE_STAGE -> LogWaterScreen(viewModel = viewModel)
                     DailyTrackingStage.EXERCISE_STAGE -> LogExerciseScreen(navController = navController, viewModel = viewModel)
+                    DailyTrackingStage.TEST_SCREEN -> TestScreen(navController = navController, viewModel = viewModel)
                 }
             }
         }
@@ -79,6 +97,75 @@ fun AddScreen(navController: NavController, viewModel: AddScreenViewModel = view
 
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun TestScreen(viewModel: AddScreenViewModel, navController: NavController) {
+
+    val state by viewModel.trackerFlowState.collectAsState()
+
+    Column {
+        Column(
+            modifier = Modifier
+                .weight(0.8f)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+
+            Text(
+                text = "Current State Before save to DB",
+                fontSize = 24.sp
+            )
+
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp),
+                thickness = 2.dp
+            )
+
+            Text(text = "Current Mood : ${state.currentMoodName}", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Current Mood Rating : ${state.currentMoodRating}", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Focus mins : ${state.minsOfFocus} mins", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Focus level : ${state.focusLevelPercentage} %", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Sleep hours : ${state.hoursOfSleep} hrs", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Sleep quality : ${state.sleepQualityRating}", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Water Intake : ${state.waterIntake} mls", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Exercise mins : ${state.minsOfExercise} mins", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Exercise intensity : ${state.exerciseIntensity}", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Date : ${state.dateOfLog}", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+
+        }
+        Column(
+            modifier = Modifier
+                .weight(0.2f)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(
+                    onClick = { viewModel.updateStage(DailyTrackingStage.EXERCISE_STAGE) }
+                ) {
+                    Text("Back")
+                }
+                Button(
+                    onClick = {
+                        navController.navigate(AddapptScreens.HomeScreen.name)
+                    }
+                ) {
+                    Text("Finish")
+                }
+            }
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun LogMoodScreen(navController: NavController, viewModel: AddScreenViewModel) {
 
@@ -138,37 +225,25 @@ private fun LogMoodScreen(navController: NavController, viewModel: AddScreenView
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            MoodsColumn(moodList = moodList, onClick = {})
-        }
-        Column(
-            modifier = Modifier
-                .weight(0.2f)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(
-                    onClick = { navController.navigate(AddapptScreens.HomeScreen.name) }
-                ) {
-                    Text("Back")
-                }
-                Button(
-                    onClick = { viewModel.updateStage(DailyTrackingStage.DAILY_FOCUS_STAGE) }
-                ) {
-                    Text("Next")
-                }
-            }
+            MoodsColumn(moodList = moodList, onClick = { name, rating ->
+                viewModel.setCurrentMood(moodName = name, moodRating = rating)
+                viewModel.updateStage(DailyTrackingStage.DAILY_FOCUS_STAGE)
+            })
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun LogFocusScreen(viewModel: AddScreenViewModel) {
+
+    val state by viewModel.trackerFlowState.collectAsState()
+
+    val minsOfFocus = remember { mutableStateOf(state.minsOfFocus/15) }
+    val displayMins = minsOfFocus.value * 15
+    val sliderPositionState = remember { mutableStateOf(0f) }
+    val focusPercentage = (sliderPositionState.value * 100).toInt()
+
     Column {
         Column(
             modifier = Modifier
@@ -177,10 +252,6 @@ private fun LogFocusScreen(viewModel: AddScreenViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            val minsOfFocus = remember { mutableStateOf(0) }
-            val displayMins = minsOfFocus.value * 15
-            val sliderPositionState = remember { mutableStateOf(0f) }
-            val focusPercentage = (sliderPositionState.value * 100).toInt()
 
             Text("How many minutes of focus were you able to apply today?")
 
@@ -204,7 +275,11 @@ private fun LogFocusScreen(viewModel: AddScreenViewModel) {
                         .weight(0.5f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(displayMins.toString())
+                    Text(
+                        text = "$displayMins mins",
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold)
                 }
                 Box(
                     modifier = Modifier
@@ -272,7 +347,7 @@ private fun LogFocusScreen(viewModel: AddScreenViewModel) {
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
-                    ){
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_focussed),
                             contentDescription = "Sleep icon",
@@ -302,7 +377,11 @@ private fun LogFocusScreen(viewModel: AddScreenViewModel) {
                     Text("Back")
                 }
                 Button(
-                    onClick = { viewModel.updateStage(DailyTrackingStage.SLEEP_DURATION_QUALITY_STAGE) }
+                    onClick = {
+                        viewModel.setMinsOfFocus(mins = displayMins)
+                        viewModel.setFocusLevelPercentage(focusLevel = focusPercentage)
+                        viewModel.updateStage(DailyTrackingStage.SLEEP_DURATION_QUALITY_STAGE)
+                    }
                 ) {
                     Text("Next")
                 }
@@ -311,8 +390,14 @@ private fun LogFocusScreen(viewModel: AddScreenViewModel) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun LogSleepScreen(viewModel: AddScreenViewModel) {
+
+    val state by viewModel.trackerFlowState.collectAsState()
+
+    val hoursOfSleep = remember { mutableStateOf(state.hoursOfSleep) }
+    val sliderPositionState = remember { mutableStateOf(0f) }
 
     Column {
         Column(
@@ -322,8 +407,6 @@ private fun LogSleepScreen(viewModel: AddScreenViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            var hoursOfSleep = remember { mutableStateOf(8) }
-            var sliderPositionState = remember { mutableStateOf(0f) }
 
             Text("How many hours of sleep did you get last night?")
 
@@ -347,7 +430,11 @@ private fun LogSleepScreen(viewModel: AddScreenViewModel) {
                         .weight(0.5f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(hoursOfSleep.value.toString())
+                    Text(
+                        text = "${hoursOfSleep.value} hrs",
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold)
                 }
                 Box(
                     modifier = Modifier
@@ -375,7 +462,7 @@ private fun LogSleepScreen(viewModel: AddScreenViewModel) {
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
-                    ){
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_insomnia),
                             contentDescription = "Insomnia icon",
@@ -407,7 +494,7 @@ private fun LogSleepScreen(viewModel: AddScreenViewModel) {
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
-                    ){
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_sleep),
                             contentDescription = "Sleep icon",
@@ -437,7 +524,11 @@ private fun LogSleepScreen(viewModel: AddScreenViewModel) {
                     Text("Back")
                 }
                 Button(
-                    onClick = { viewModel.updateStage(DailyTrackingStage.WATER_INTAKE_STAGE) }
+                    onClick = {
+                        viewModel.setHoursOfSleep(hours = hoursOfSleep.value)
+                        viewModel.setSleepQualityRating(quality = (sliderPositionState.value * 10).toInt())
+                        viewModel.updateStage(DailyTrackingStage.WATER_INTAKE_STAGE)
+                    }
                 ) {
                     Text("Next")
                 }
@@ -446,9 +537,17 @@ private fun LogSleepScreen(viewModel: AddScreenViewModel) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun LogWaterScreen(viewModel: AddScreenViewModel) {
 
+    val state by viewModel.trackerFlowState.collectAsState()
+
+    val noOfGlassesClicked = remember { mutableStateOf(state.waterIntake/250) }
+    val amountInMilliliters = remember { mutableStateOf(0) }
+
+    amountInMilliliters.value = noOfGlassesClicked.value * 250
+    
     Column {
         Column(
             modifier = Modifier
@@ -457,7 +556,32 @@ private fun LogWaterScreen(viewModel: AddScreenViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            WaterGrid()
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(
+                    text = "${amountInMilliliters.value} mls",
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_water_drop),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(60.dp),
+                    tint = Color.Blue
+                )
+            }
+            WaterGrid(
+                indexOfLastClicked = noOfGlassesClicked.value - 1
+            ) { indexOfClicked ->
+                noOfGlassesClicked.value = indexOfClicked + 1
+            }
         }
         Column(
             modifier = Modifier
@@ -479,6 +603,7 @@ private fun LogWaterScreen(viewModel: AddScreenViewModel) {
                 Button(
                     onClick = { viewModel.updateStage(DailyTrackingStage.EXERCISE_STAGE) }
                 ) {
+                    viewModel.setWaterIntake(intake = amountInMilliliters.value)
                     Text("Next")
                 }
             }
@@ -486,8 +611,15 @@ private fun LogWaterScreen(viewModel: AddScreenViewModel) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun LogExerciseScreen(navController: NavController, viewModel: AddScreenViewModel) {
+
+    val state by viewModel.trackerFlowState.collectAsState()
+
+    val minsOfExercise = remember { mutableStateOf(state.minsOfExercise / 15) }
+    val displayMins = minsOfExercise.value * 15
+    val sliderPositionState = remember { mutableStateOf(0f) }
 
     Column {
         Column(
@@ -497,9 +629,6 @@ private fun LogExerciseScreen(navController: NavController, viewModel: AddScreen
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            var minsOfExercise = remember { mutableStateOf(0) }
-            var displayMins = minsOfExercise.value * 15
-            var sliderPositionState = remember { mutableStateOf(0f) }
 
             Text("How many minutes of exercise did you achieve today?")
 
@@ -523,7 +652,11 @@ private fun LogExerciseScreen(navController: NavController, viewModel: AddScreen
                         .weight(0.5f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("$displayMins mins")
+                    Text(
+                        text = "$displayMins mins",
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold)
                 }
                 Box(
                     modifier = Modifier
@@ -551,7 +684,7 @@ private fun LogExerciseScreen(navController: NavController, viewModel: AddScreen
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
-                    ){
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_sitting),
                             contentDescription = "Sitting icon",
@@ -584,7 +717,7 @@ private fun LogExerciseScreen(navController: NavController, viewModel: AddScreen
                 ) {
                     Column(
 
-                    ){
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_running),
                             contentDescription = "Sprint icon",
@@ -614,9 +747,13 @@ private fun LogExerciseScreen(navController: NavController, viewModel: AddScreen
                     Text("Back")
                 }
                 Button(
-                    onClick = { /**TODO*/ }
+                    onClick = {
+                        viewModel.setMinsOfExercise(mins = displayMins)
+                        viewModel.setExerciseIntensity(intensity = sliderPositionState.value.toString())
+                        viewModel.updateStage(DailyTrackingStage.TEST_SCREEN)
+                    }
                 ) {
-                    Text("Finish")
+                    Text("To Test Screen")
                 }
             }
         }
