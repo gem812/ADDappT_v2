@@ -45,13 +45,13 @@ fun MoodRow(
 @Composable
 fun MoodsColumn(
     moodList: List<MoodRowModel>,
-    onClick: (Int) -> Unit
+    onClick: (String, Int) -> Unit
 ) {
     LazyColumn{
         moodList.forEach { mood ->
             item {
                 MoodRow(mood = mood, onClick = {
-                    onClick(mood.moodRating)
+                    onClick(mood.moodName, mood.moodRating)
                 })
             }
         }

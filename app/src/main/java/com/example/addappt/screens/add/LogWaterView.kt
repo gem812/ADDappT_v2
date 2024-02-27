@@ -35,13 +35,16 @@ private val waterIconList = listOf(
     R.drawable.ic_water_cup
 )
 
-@Preview
+//@Preview
 @Composable
-fun WaterGrid() {
+fun WaterGrid(
+    indexOfLastClicked : Int,
+    onSelected : (Int) -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(start = 36.dp)
-    ){
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -51,7 +54,7 @@ fun WaterGrid() {
                 columns = 3
             ) {
 
-                val lastClickedIndex = remember { mutableStateOf(-1) }
+                val lastClickedIndex = remember { mutableStateOf(indexOfLastClicked) }
 
                 waterIconList.forEachIndexed { index, i ->
                     ClickableWaterIcon(
@@ -59,6 +62,7 @@ fun WaterGrid() {
                         lastClickedIndex = lastClickedIndex,
                         onClick = { indexClicked ->
                             lastClickedIndex.value = indexClicked
+                            onSelected(indexClicked)
                         })
                 }
             }
@@ -69,28 +73,30 @@ fun WaterGrid() {
 @Composable
 fun ClickableWaterIcon(
     index: Int,
-    lastClickedIndex : MutableState<Int>,
+    lastClickedIndex: MutableState<Int>,
     onClick: (Int) -> Unit
 ) {
 
     var tint = remember { mutableStateOf(Color.Gray) }
 
-    tint.value = if(lastClickedIndex.value < index) Color.Gray else Color.Cyan
+    tint.value = if (lastClickedIndex.value < index) Color.Gray else Color.Cyan
 
-        Box(
+    Box(
+        modifier = Modifier
+            .size(80.dp)
+            .clickable {
+                onClick(index)
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_water_cup),
+            contentDescription = "Water Icon",
             modifier = Modifier
-                .size(80.dp)
-                .clickable {
-                    onClick(index)
-                },
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_water_cup),
-                contentDescription = "Water Icon",
-                tint = tint.value
-            )
-        }
+                .size(48.dp),
+            tint = tint.value
+        )
+    }
 }
 
 @Composable
