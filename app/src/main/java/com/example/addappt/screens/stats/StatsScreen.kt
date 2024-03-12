@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -26,10 +27,10 @@ import com.github.tehras.charts.bar.BarChartData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StatsScreen(){
+fun StatsScreen() {
     val context = LocalContext.current
 
-    Scaffold (
+    Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Stats", fontSize = 24.sp) }
@@ -40,38 +41,49 @@ fun StatsScreen(){
                 modifier = Modifier
                     .padding(it)
                     .fillMaxSize(),
-            ){
-                if(checkUsageStatsPermission(context = context)){
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(180.dp)
-                            .padding(start = 18.dp, top = 6.dp, end = 6.dp, bottom = 12.dp)
-                    ){
-                        WeeklyScreenTimeUsageChart(context = context)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 6.dp)
+                ) {
+                    if (checkUsageStatsPermission(context = context)) {
+                        Text(
+                            text = "Weekly Screen Time",
+                            modifier = Modifier
+                                .padding(vertical = 6.dp),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(180.dp)
+                                .padding(start = 18.dp, top = 6.dp, end = 6.dp, bottom = 12.dp)
+                        ) {
+                            WeeklyScreenTimeUsageChart(context = context)
+                        }
                     }
                 }
-                
             }
         }
     )
 }
 
 @Composable
-fun WeeklyScreenTimeUsageChart(context : Context){
+fun WeeklyScreenTimeUsageChart(context: Context) {
 
     var chartData = mutableListOf<BarChartData.Bar>()
-    var weeklyScreenTimeData = ScreenTimeCalculator(context = context).getScreenTimeBreakdownForPreviousWeek()
+    var weeklyScreenTimeData =
+        ScreenTimeCalculator(context = context).getScreenTimeBreakdownForPreviousWeek()
 
     weeklyScreenTimeData.forEach {
 
-    val color = if(timestampAsRoundedHours(it.totalScreenTime) < 2L){
-        Color.Green.copy(alpha = 0.5f)
-    } else if(timestampAsRoundedHours(it.totalScreenTime) in 2L..4L) {
-        Color.Yellow.copy(alpha = 0.5f)
-    } else {
-        Color.Red.copy(alpha = 0.5f)
-    }
+        val color = if (timestampAsRoundedHours(it.totalScreenTime) < 2L) {
+            Color.Green.copy(alpha = 0.5f)
+        } else if (timestampAsRoundedHours(it.totalScreenTime) in 2L..4L) {
+            Color.Yellow.copy(alpha = 0.5f)
+        } else {
+            Color.Red.copy(alpha = 0.5f)
+        }
 
         chartData.add(
             BarChartData.Bar(

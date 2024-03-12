@@ -3,6 +3,7 @@ package com.example.addappt.screens.home
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,12 +46,12 @@ import com.example.addappt.utils.formatScreenTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navToEnableUsageStats : () -> Unit
-){
+    navToEnableUsageStats: () -> Unit
+) {
 
     val context = LocalContext.current
 
-    Scaffold (
+    Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Home", fontSize = 24.sp) }
@@ -61,46 +62,56 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(it)
                     .fillMaxSize(),
-            ){
-                Text("Screen Time", style = MaterialTheme.typography.titleMedium)
-                Spacer(modifier = Modifier.height(8.dp))
-                if(checkUsageStatsPermission(context = context)) {
-                    Text("Permissions Enabled")
-                    Log.d("USAGE_STATS", formatScreenTime(ScreenTimeCalculator(context = context).getScreenTimeForCurrentDay()))
-                } else {
-                    Button(onClick = {
-                        navToEnableUsageStats.invoke()
-                    }) {
-                        Text("Click to enable usage permissions")
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                ) {
+                    Text("Screen Time Dashboard", style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    if (checkUsageStatsPermission(context = context)) {
+                        Text("Permissions Enabled")
+                        Log.d(
+                            "USAGE_STATS",
+                            formatScreenTime(ScreenTimeCalculator(context = context).getScreenTimeForCurrentDay())
+                        )
+                    } else {
+                        Surface(
+                            modifier = Modifier
+                                .clickable { navToEnableUsageStats.invoke() }
+                        ) {
+                            Text("Click to enable usage permissions")
+                        }
                     }
-                }
 
-                val carouselInsetInfo = CarouselInsetModel(
-                    carouselInfo = arrayListOf(
-                        CarouselContentsModel(
-                            title = "Mood Monitor",
-                            icon = R.drawable.ic_smile_face,
-                            text = "Text"
-                        ),
-                        CarouselContentsModel(
-                            title = "Sleep Monitor",
-                            icon = R.drawable.ic_night,
-                            text = "Text"
-                        ),
-                        CarouselContentsModel(
-                            title = "Hydration Monitor",
-                            icon = R.drawable.ic_water_drop,
-                            text = "Text"
-                        ),
-                        CarouselContentsModel(
-                            title = "Screentime Monitor",
-                            icon = R.drawable.ic_phone_crossed,
-                            text = "Text"
+                    val carouselInsetInfo = CarouselInsetModel(
+                        carouselInfo = arrayListOf(
+                            CarouselContentsModel(
+                                title = "Mood Monitor",
+                                icon = R.drawable.ic_smile_face,
+                                text = "Text"
+                            ),
+                            CarouselContentsModel(
+                                title = "Sleep Monitor",
+                                icon = R.drawable.ic_night,
+                                text = "Text"
+                            ),
+                            CarouselContentsModel(
+                                title = "Hydration Monitor",
+                                icon = R.drawable.ic_water_drop,
+                                text = "Text"
+                            ),
+                            CarouselContentsModel(
+                                title = "Screentime Monitor",
+                                icon = R.drawable.ic_phone_crossed,
+                                text = "Text"
+                            )
                         )
                     )
-                )
 
-                OptionsCarousel(model = carouselInsetInfo)
+                    OptionsCarousel(model = carouselInsetInfo)
+                }
+
             }
         }
     )
@@ -108,7 +119,7 @@ fun HomeScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OptionsCarousel(model : CarouselInsetModel){
+fun OptionsCarousel(model: CarouselInsetModel) {
     val pageCount = model.carouselInfo.size
     val pagerState = rememberPagerState(0)
 
@@ -117,7 +128,7 @@ fun OptionsCarousel(model : CarouselInsetModel){
             .padding(horizontal = 24.dp)
             .fillMaxWidth()
             .height(180.dp)
-    ){
+    ) {
         HorizontalPager(
             pageCount = pageCount,
             modifier = Modifier,
@@ -125,18 +136,18 @@ fun OptionsCarousel(model : CarouselInsetModel){
             key = {
                 model.carouselInfo[it].title
             },
-        ) {index ->
+        ) { index ->
             Surface(
                 modifier = Modifier
                     .padding(12.dp)
                     .fillMaxSize(),
                 shape = RoundedCornerShape(12.dp),
                 color = Color.LightGray
-            ){
+            ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
-                ){
+                ) {
                     Icon(
                         painter = painterResource(id = model.carouselInfo[index].icon),
                         contentDescription = model.carouselInfo[index].title + " icon",
@@ -159,9 +170,9 @@ fun OptionsCarousel(model : CarouselInsetModel){
             .fillMaxWidth(),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.Center
-    ){
-        repeat(pageCount) {iteration ->
-            val color = if(pagerState.currentPage == iteration) Color.Magenta else Color.LightGray
+    ) {
+        repeat(pageCount) { iteration ->
+            val color = if (pagerState.currentPage == iteration) Color.Magenta else Color.LightGray
             Box(
                 modifier = Modifier
                     .padding(horizontal = 6.dp, vertical = 4.dp)

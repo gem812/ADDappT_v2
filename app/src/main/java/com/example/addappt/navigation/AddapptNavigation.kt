@@ -15,7 +15,6 @@ import com.example.addappt.screens.profile.ProfileScreen
 import com.example.addappt.screens.settings.SettingsScreen
 import com.example.addappt.screens.splash.SplashScreen
 import com.example.addappt.screens.stats.StatsScreen
-import com.google.common.math.Stats
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -50,7 +49,7 @@ fun AddapptNavigation(
             StatsScreen()
         }
         composable(AddapptScreens.SettingsScreen.name){
-            SettingsScreen(navController = navController)
+            SettingsScreen(navController = navController, navToUsagePermissions = navToEnableUsageStats)
         }
         composable(AddapptScreens.ProfileScreen.name){
             ProfileScreen(navController = navController)
