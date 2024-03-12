@@ -1,5 +1,7 @@
 package com.example.addappt.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,10 +15,13 @@ import com.example.addappt.screens.profile.ProfileScreen
 import com.example.addappt.screens.settings.SettingsScreen
 import com.example.addappt.screens.splash.SplashScreen
 import com.example.addappt.screens.stats.StatsScreen
-import com.google.common.math.Stats
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AddapptNavigation(navController: NavHostController){
+fun AddapptNavigation(
+    navController: NavHostController,
+    navToEnableUsageStats: () -> Unit
+){
 
     NavHost(
         navController = navController,
@@ -32,7 +37,7 @@ fun AddapptNavigation(navController: NavHostController){
             LoginScreen(navController = navController)
         }
         composable(AddapptScreens.HomeScreen.name){
-            HomeScreen()
+            HomeScreen(navToEnableUsageStats = navToEnableUsageStats)
         }
         composable(AddapptScreens.MotivationScreen.name){
             MotivationScreen()
@@ -44,7 +49,7 @@ fun AddapptNavigation(navController: NavHostController){
             StatsScreen()
         }
         composable(AddapptScreens.SettingsScreen.name){
-            SettingsScreen(navController = navController)
+            SettingsScreen(navController = navController, navToUsagePermissions = navToEnableUsageStats)
         }
         composable(AddapptScreens.ProfileScreen.name){
             ProfileScreen(navController = navController)

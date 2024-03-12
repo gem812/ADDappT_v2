@@ -28,7 +28,10 @@ import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(navController : NavController){
+fun SettingsScreen(
+    navController : NavController,
+    navToUsagePermissions : () -> Unit
+){
     Scaffold (
         topBar = {
             TopAppBar(
@@ -80,9 +83,11 @@ fun SettingsScreen(navController : NavController){
                 )
                 ClickableRowSettings(
                     icon = R.drawable.ic_time_spent,
-                    primaryText = "Time Spent",
+                    primaryText = "Screentime Permissions",
                     destinationRoute = "",
-                    onClick = {}
+                    onClick = {
+                        navToUsagePermissions.invoke()
+                    }
                 )
                 Divider(
                     modifier = Modifier.padding(horizontal = 8.dp),
