@@ -24,7 +24,6 @@ fun convertLongToWeekRange(timestamp: Long): String {
     val dateFormat = SimpleDateFormat("MMM d", Locale.getDefault())
     return "${dateFormat.format(startOfWeek.time)} - ${dateFormat.format(endOfWeek.time)}"
 }
-
 fun convertLongToMonth(timestamp: Long): String {
     val dateFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
     return dateFormat.format(Date(timestamp))

@@ -2,6 +2,7 @@ package com.example.addappt.screens.home
 
 import android.content.Intent
 import android.provider.Settings
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,9 +39,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import com.example.addappt.R
+import com.example.addappt.data.ScreenTimeCalculator
 import com.example.addappt.models.ui.CarouselContentsModel
 import com.example.addappt.models.ui.CarouselInsetModel
 import com.example.addappt.utils.checkUsageStatsPermission
+import com.example.addappt.utils.formatScreenTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,6 +69,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 if(checkUsageStatsPermission(context = context)) {
                     Text("Permissions Enabled")
+                    Log.d("USAGE_STATS", formatScreenTime(ScreenTimeCalculator(context = context).getScreenTimeForCurrentDay()))
                 } else {
                     Button(onClick = {
                         navToEnableUsageStats.invoke()
