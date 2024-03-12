@@ -1,9 +1,13 @@
 package com.example.addappt
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -33,20 +37,28 @@ import com.example.addappt.navigation.AddapptScreens
 import com.example.addappt.ui.theme.ADDappTTheme
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ADDappTTheme {
-                AddapptApp()
+                AddapptApp(
+                    navToEnableUsageStats = {
+                        startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                    }
+                )
             }
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AddapptApp() {
+fun AddapptApp(
+    navToEnableUsageStats : () -> Unit
+) {
 
     val navController = rememberNavController()
     val backstackEntry = navController.currentBackStackEntryAsState()
@@ -137,7 +149,7 @@ fun AddapptApp() {
             color = MaterialTheme.colorScheme.background,
             modifier = Modifier.fillMaxSize()
         ) {
-            AddapptNavigation(navController = navController)
+            AddapptNavigation(navController = navController, navToEnableUsageStats = navToEnableUsageStats)
         }
     }
 }
