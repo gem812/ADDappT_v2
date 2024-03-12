@@ -69,7 +69,6 @@ fun HomeScreen(
                 } else {
                     Button(onClick = {
                         navToEnableUsageStats.invoke()
-//                        startActivity(context, Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
                     }) {
                         Text("Click to enable usage permissions")
                     }
