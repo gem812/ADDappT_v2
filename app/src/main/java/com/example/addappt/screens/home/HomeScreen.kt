@@ -18,7 +18,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -43,6 +42,9 @@ import com.example.addappt.models.ui.CarouselContentsModel
 import com.example.addappt.models.ui.CarouselInsetModel
 import com.example.addappt.utils.checkUsageStatsPermission
 import com.example.addappt.utils.formatScreenTime
+import com.example.addappt.utils.formatScreenTimeForChart
+import com.example.addappt.utils.screenTimeColorGenerator
+import com.example.addappt.utils.timestampAsRoundedHours
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,11 +73,48 @@ fun HomeScreen(
                     Text("Screen Time Dashboard", style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(8.dp))
                     if (checkUsageStatsPermission(context = context)) {
-                        Text("Permissions Enabled")
-                        Log.d(
-                            "USAGE_STATS",
-                            formatScreenTime(ScreenTimeCalculator(context = context).getScreenTimeForCurrentDay())
+                        Log.d("USAGE_STATS", formatScreenTime(ScreenTimeCalculator(context = context).getScreenTimeForCurrentDay()))
+                        val screenTimeCalculator : ScreenTimeCalculator = ScreenTimeCalculator(context = context)
+
+                        var screenTimeForToday = screenTimeCalculator.getScreenTimeForCurrentDay()
+                        var screenTimeForTheWeek = screenTimeCalculator.getScreenTimeForPreviousWeek()
+                        var screenTimeForTheMonth = screenTimeCalculator.getScreenTimeForPreviousWeek()
+                        var averageForTheWeek = screenTimeForTheWeek / 7
+                        var averageForTheMonth = screenTimeForTheMonth / 28
+
+                        //TODO : Fix erroneous Month total
+
+                        val carouselInfo = CarouselInsetModel(
+                            carouselInfo = arrayListOf(
+                                CarouselContentsModel(
+                                    title = "Today",
+                                    text = formatScreenTime(screenTimeForToday),
+                                    color = screenTimeColorGenerator(timestampAsRoundedHours(screenTimeForToday))
+                                ),
+                                CarouselContentsModel(
+                                    title = "Previous Week",
+                                    text = formatScreenTime(screenTimeForTheWeek)
+                                ),
+                                CarouselContentsModel(
+                                    title = "Previous Month",
+                                    text = formatScreenTime(screenTimeForTheMonth),
+                                    color = screenTimeColorGenerator(timestampAsRoundedHours(screenTimeForTheMonth))
+                                ),
+                                CarouselContentsModel(
+                                    title = "Week's Average",
+                                    text = formatScreenTime(averageForTheWeek),
+                                    color = screenTimeColorGenerator(timestampAsRoundedHours(averageForTheWeek))
+                                ),
+                                CarouselContentsModel(
+                                    title = "Months's Average",
+                                    text = formatScreenTime(averageForTheMonth),
+                                    color = screenTimeColorGenerator(timestampAsRoundedHours(averageForTheMonth))
+                                ),
+                            )
                         )
+                        
+                        OptionsCarousel(model = carouselInfo)
+
                     } else {
                         Surface(
                             modifier = Modifier
@@ -103,23 +142,19 @@ fun HomeScreen(
                         carouselInfo = arrayListOf(
                             CarouselContentsModel(
                                 title = "Mood Monitor",
-                                icon = R.drawable.ic_smile_face,
-                                text = "Text"
+                                icon = R.drawable.ic_smile_face
                             ),
                             CarouselContentsModel(
                                 title = "Sleep Monitor",
-                                icon = R.drawable.ic_night,
-                                text = "Text"
+                                icon = R.drawable.ic_night
                             ),
                             CarouselContentsModel(
                                 title = "Hydration Monitor",
-                                icon = R.drawable.ic_water_drop,
-                                text = "Text"
+                                icon = R.drawable.ic_water_drop
                             ),
                             CarouselContentsModel(
                                 title = "Screentime Monitor",
-                                icon = R.drawable.ic_phone_crossed,
-                                text = "Text"
+                                icon = R.drawable.ic_phone_crossed
                             )
                         )
                     )
@@ -157,24 +192,44 @@ fun OptionsCarousel(model: CarouselInsetModel) {
                     .padding(12.dp)
                     .fillMaxSize(),
                 shape = RoundedCornerShape(12.dp),
-                color = Color.LightGray
+                color = model.carouselInfo[index].color
             ) {
                 Column(
+                    modifier = Modifier
+                        .padding(12.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Icon(
-                        painter = painterResource(id = model.carouselInfo[index].icon),
-                        contentDescription = model.carouselInfo[index].title + " icon",
-                        modifier = Modifier
-                            .size(96.dp)
-                    )
+                    if(model.carouselInfo[index].title.isNotEmpty()){
+                        Text(
+                            text = model.carouselInfo[index].title,
+                            color = Color.DarkGray,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    if (model.carouselInfo[index].icon > 0) {
+                        Icon(
+                            painter = painterResource(id = model.carouselInfo[index].icon),
+                            contentDescription = model.carouselInfo[index].title + " icon",
+                            modifier = Modifier
+                                .size(96.dp)
+                        )
+                    }
                     Text(
-                        text = model.carouselInfo[index].title,
+                        text = model.carouselInfo[index].text,
                         color = Color.DarkGray,
                         fontSize = 36.sp,
                         fontWeight = FontWeight.Bold
                     )
+                    if(model.carouselInfo[index].optionalSecondaryText.isNotEmpty()) {
+                        Text(
+                            text = model.carouselInfo[index].optionalSecondaryText,
+                            color = Color.DarkGray,
+                            fontSize = 36.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
         }
