@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.addappt.R
@@ -79,10 +80,24 @@ fun HomeScreen(
                         Surface(
                             modifier = Modifier
                                 .clickable { navToEnableUsageStats.invoke() }
+                                .fillMaxWidth(),
+                            shape = RoundedCornerShape(4.dp),
+                            color = Color.Red.copy(alpha = 0.25f)
                         ) {
-                            Text("Click to enable usage permissions")
+                            Text(
+                                text = "Click to enable usage permissions",
+                                modifier = Modifier
+                                    .padding(vertical = 6.dp),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = Color.Red,
+                                textAlign = TextAlign.Center
+                            )
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text("Moods Dashboard", style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     val carouselInsetInfo = CarouselInsetModel(
                         carouselInfo = arrayListOf(
