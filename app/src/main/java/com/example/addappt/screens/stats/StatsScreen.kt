@@ -21,6 +21,7 @@ import com.example.addappt.components.charts.GenerateBarChart
 import com.example.addappt.data.ScreenTimeCalculator
 import com.example.addappt.utils.checkUsageStatsPermission
 import com.example.addappt.utils.convertLongToDay
+import com.example.addappt.utils.timestampAsRoundedHours
 import com.github.tehras.charts.bar.BarChartData
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,7 +32,7 @@ fun StatsScreen(){
     Scaffold (
         topBar = {
             TopAppBar(
-                title = { Text("Home", fontSize = 24.sp) }
+                title = { Text("Stats", fontSize = 24.sp) }
             )
         },
         content = {
@@ -45,6 +46,7 @@ fun StatsScreen(){
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(180.dp)
+                            .padding(start = 18.dp, top = 6.dp, end = 6.dp, bottom = 12.dp)
                     ){
                         WeeklyScreenTimeUsageChart(context = context)
                     }
@@ -58,15 +60,23 @@ fun StatsScreen(){
 @Composable
 fun WeeklyScreenTimeUsageChart(context : Context){
 
-
     var chartData = mutableListOf<BarChartData.Bar>()
     var weeklyScreenTimeData = ScreenTimeCalculator(context = context).getScreenTimeBreakdownForPreviousWeek()
 
-    weeklyScreenTimeData.forEach { 
+    weeklyScreenTimeData.forEach {
+
+    val color = if(timestampAsRoundedHours(it.totalScreenTime) < 2L){
+        Color.Green.copy(alpha = 0.5f)
+    } else if(timestampAsRoundedHours(it.totalScreenTime) in 2L..4L) {
+        Color.Yellow.copy(alpha = 0.5f)
+    } else {
+        Color.Red.copy(alpha = 0.5f)
+    }
+
         chartData.add(
             BarChartData.Bar(
                 value = it.totalScreenTime.toFloat(),
-                color = Color.White,
+                color = color,
                 label = convertLongToDay(it.timestamp).substring(0, 1)
             )
         )

@@ -24,24 +24,24 @@ class BarChartDrawer : BarDrawer {
         canvas.drawRoundRect(
             barArea.left,
             0f,
-            barArea.left + 10f,
+            barArea.right + 24f,
             barArea.bottom,
             12f,
             12f,
             barPaint.apply {
-                color = Color.LightGray
+                color = Color.LightGray.copy(alpha = 0.5f)
             }
         )
 
         canvas.drawRoundRect(
             barArea.left,
             barArea.top,
-            barArea.left + 10f,
+            barArea.right + 24f,
             barArea.bottom,
             12f,
             12f,
             barPaint.apply {
-                color = Color.White
+                color = bar.color
             }
         )
     }

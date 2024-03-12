@@ -49,9 +49,9 @@ fun formatScreenTimeForChart(totalScreenTimeAsFloat: Float): String {
     val hours = TimeUnit.MILLISECONDS.toHours(totalScreenTime - TimeUnit.DAYS.toMillis(days))
     val minutes = TimeUnit.MILLISECONDS.toMinutes(totalScreenTime - TimeUnit.DAYS.toMillis(days) - TimeUnit.HOURS.toMillis(hours))
 
-    return if (days > 0) {
-        String.format("%d days, %02d:%02d hours", days, hours, minutes)
-    } else {
-        String.format("%02d:%02d hours", hours, minutes)
-    }
+    return String.format("%2d:%02d hrs", hours, minutes)
+}
+
+fun timestampAsRoundedHours(totalScreenTime: Long): Long {
+    return TimeUnit.MILLISECONDS.toHours(totalScreenTime)
 }

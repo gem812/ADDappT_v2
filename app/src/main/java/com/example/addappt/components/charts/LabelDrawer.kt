@@ -13,7 +13,7 @@ class LabelDrawer() : LabelDrawer {
 
     private val paint = Paint().apply {
         this.textAlign = Paint.Align.CENTER
-        this.color = Color.White.toLegacyInt()
+        this.color = Color.DarkGray.toLegacyInt()
     }
     override fun drawLabel(
         drawScope: DrawScope,
