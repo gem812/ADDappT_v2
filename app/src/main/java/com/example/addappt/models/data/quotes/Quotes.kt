@@ -1,3 +1,5 @@
 package com.example.addappt.models.data.quotes
 
-class Quotes : ArrayList<QuotesItem>()
+data class Quotes (
+    val quotes : ArrayList<QuotesItem>
+)

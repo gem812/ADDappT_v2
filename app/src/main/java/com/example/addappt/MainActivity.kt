@@ -35,7 +35,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.addappt.navigation.AddapptNavigation
 import com.example.addappt.navigation.AddapptScreens
 import com.example.addappt.ui.theme.ADDappTTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
