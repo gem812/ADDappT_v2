@@ -6,7 +6,8 @@ object Constants {
 
     object QuoteApi{
 
-        const val BASE_URL = ""
+        const val BASE_URL = "https://zenquotes.io/"
+        const val APPEND = "?api=quotes"
         const val API_KEY = BuildConfig.API_KEY
 
     }
