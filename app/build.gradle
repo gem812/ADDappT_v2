@@ -10,12 +10,17 @@ android {
     namespace 'com.example.addappt'
     compileSdk 34
 
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def apikey = properties.getProperty('apikey')
+
     defaultConfig {
         applicationId "com.example.addappt"
         minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
+        buildConfigField "String", "API_KEY", apikey
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -29,6 +34,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures{
+        buildConfig true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
